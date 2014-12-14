@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"></script>
+
+  <script>
+  if (annyang) {
+    var commands = {
+      'say hello' : function() {
+        console.log("Hello");
+      },
+    };
+
+    annyang.addCommands(commands);
+
+    // annyang.debug();
+
+    annyang.start();
+  }
+  </script>
+
+</head>
+
+<body>
+</body>
+
+</html>
