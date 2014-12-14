@@ -1,44 +1,40 @@
 var express = require('express');
 var app = express();
+var request = require("request");
+var bodyParser = require("body-parser");
+var methodOverride = require("method-override");
 
+app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
+app.use(bodyParser.urlencoded({extended: true}));
 
-
-
-/*	***************************  */
-/*		Initialize annyang       */
-/*	***************************	 */
-
-var Annyang = require('annyang');
-var annyang = new Annyang();
-
-if (annyang) 
+// Set up an object that stores the different query urls
+var apiUrls =
 {
-  var commands = {
-    'say hello' : function() 
-    {
-        console.log("Hello");
-    }
-  };
-
-  annyang.init(commands);
-
-}
-
+	showCards : "http://api.mtgapi.com/v1/card/name/",
+	showCardById : "http://api.mtgapi.com/v1/card/id/",
+	showSets: "http://api.mtgapi.com/v2/sets",
+	showCardsInSet: "http://api.mtgapi.com/v2/sets?code="
+};
 
 app.get('/', function (req, res) {
   res.render('index.ejs');
 })
 
+app.post('/cards/', function(req,res)
+{
+	var card = req.body.card;
 
+	request(apiUrls["showCards"]+card.name, function (error, response, body) 
+	{
+		if (!error && response.statusCode == 200) 
+		{
+			var obj = JSON.parse(body);
 
-
-
-
-
-
-
-
-
+			res.render("cards/show", { cardList : obj} );
+		}
+	});		
+});
 
 // Start the server
 var server = app.listen(3001, function () {
