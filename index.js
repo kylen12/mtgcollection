@@ -17,9 +17,14 @@ var apiUrls =
 	showCardsInSet: "http://api.mtgapi.com/v2/sets?code="
 };
 
+
+
+
 app.get('/', function (req, res) {
   res.render('index.ejs');
 })
+
+
 
 app.post('/cards/', function(req,res)
 {
@@ -30,14 +35,40 @@ app.post('/cards/', function(req,res)
 		if (!error && response.statusCode == 200) 
 		{
 			var obj = JSON.parse(body);
-
-			res.render("cards/show", { cardList : obj} );
+			//console.log(obj);
+			
+			res.render("cards/index", { cardList : obj} );
 		}
 	});		
 });
 
+
+
+
+app.get('/cards/:id', function(req, res)
+{
+	request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
+	{
+		if (!error && response.statusCode == 200) 
+		{
+			var obj = JSON.parse(body);
+			//console.log(obj);
+
+			res.render("cards/show", { card : obj[0]} );
+		}
+	});		
+});
+
+
+
+
+
+
+
+
 // Start the server
-var server = app.listen(3001, function () {
+var server = app.listen(3001, function () 
+{
 
   var host = server.address().address
   var port = server.address().port

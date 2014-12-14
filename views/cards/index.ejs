@@ -9,12 +9,6 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"></script>
 
-<style>
-  .navbar {
-    position: relative;
-    margin-bottom: 20px;
-  }
-</style>
 </head>
 
 <body>
@@ -55,14 +49,16 @@
 
 <div class="container">
 
+  <% cardList.forEach(function (card) { %>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <p class="card" >
-                <%= card.name %>
+                <a href="/cards/<%= card.id %>" class="header"><%= card.name %></a>
                 <%= card.id %>
             </p>
         </div>
     </div>
+   <% }) %>   
   </div>
 </div>
 </body>
