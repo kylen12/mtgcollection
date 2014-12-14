@@ -2,24 +2,37 @@
 <html>
 <head>
 
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-<script src="./index.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js">
-</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"></script>
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <script>
+  if (annyang) {
+    var commands = {
+      'say hello' : function() {
+        console.log("Hello");
+      },
+    };
+
+    annyang.addCommands(commands);
+
+    annyang.debug();
+
+    annyang.start();
+  }
+  </script>
 
 
-</script>
-
-</head>
-
-<body>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<style>
+  .navbar {
+    position: relative;
+    margin-bottom: 20px;
+  }
+</style>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -51,7 +64,24 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+</head>
 
+<body>
+    <!-- Fixed navbar -->
+    
+  <div class="container">
+    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="post" action="/cards">
+      
+      <div class="headings">Title</div>
+
+      <input id="title" type="text" name="card[name]">
+
+      <button>Search for Card</button>
+    </form>
+  </div>
+
+
+<script type="text/javascript" src="index.js"></script>
 </body>
 
 </html>
