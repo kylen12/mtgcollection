@@ -5,6 +5,7 @@ var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
+var db = require('./models');
 
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
@@ -18,6 +19,38 @@ var apiUrls =
 	showSets: "http://api.mtgapi.com/v2/sets",
 	showCardsInSet: "http://api.mtgapi.com/v2/sets?code="
 };
+
+// app.post('/users', function(req,res) 
+// {
+//   var article = req.body.article;
+
+//   db.article.create 
+//   ({ 
+//     title: article.title, 
+//     summary: article.summary, 
+//     content: article.content, 
+//     imgurl: article.imgurl    
+//   })
+//     .then(function(article) {
+//     res.redirect("/news/" + article.id);
+//   });  
+// });
+
+// app.get('/newArticle', function(req,res) {
+//   res.render('news/new');
+// });
+
+
+// app.get('/news', function(req,res) 
+// {
+//   db.articles.findAll()
+//   .then ( function (articles) {
+
+//     res.render("news/index", {articles: articles});     
+
+//   });
+// });
+
 
 app.post('/authenticate/signup', function(req, res)
 {
@@ -72,6 +105,21 @@ app.post('/search', function(req,res)
 					})
 				})(i);
 			}
+		}
+	});		
+});
+
+app.post('/cards/:id', function(req, res)
+{
+	request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
+	{
+		if (!error && response.statusCode == 200) 
+		{
+			var obj = JSON.parse(body);
+			//console.log(obj[0]);
+
+			// Add Card to DB
+			// Redirect to users library
 		}
 	});		
 });

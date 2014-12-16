@@ -17,11 +17,15 @@
 }
 
 .row {
-  border:2px solid black;
-
+  padding: 10px;
 
 }
 
+img {
+  position: relative;
+  float: left;
+  width: 100%;
+}
 </style>
 </head>
 
@@ -67,11 +71,11 @@
   <% cardList.forEach(function (card) { %>
     <% if (typeof card !== 'undefined') {%>
       <div class="row">
-        <div class="col-sm-3" style="height:100%">
+        <div class="col-sm-2" style="height:100%">
           <a href="/cards/<%= card.id %>"><img src="<%= card.image %>"/></a>
         </div>
 
-        <div class="col-sm-9">
+        <div class="col-sm-8">
           <div class="row">
             <div class="col-sm-6">
               <a href="/cards/<%= card.id %>"><%= card.name %></a>
@@ -94,6 +98,12 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="col-sm-2">
+      <form method="post" action="/cards/<%= card.id %>">
+        <button>Add</button>
+      </form>
       </div>
     </div>
     <% }  %>
