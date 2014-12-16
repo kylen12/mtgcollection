@@ -5,7 +5,9 @@ var app = express();
 var request = require("request");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
-var db = require('./models');
+var db = require("./models");
+var passport = require("passport");
+var session = require("cookie-session");
 
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
@@ -26,6 +28,9 @@ app.use(session( {
   })
 );
 
+// get passport started
+app.use(passport.initialize());
+app.use(passport.session());
 
 /*
 SERIALizING
@@ -59,6 +64,15 @@ passport.deserializeUser(function(id, done){
     });
 });
 
+
+
+var apiUrls =
+{
+        showCards : "http://api.mtgapi.com/v1/card/name/",
+        showCardById : "http://api.mtgapi.com/v1/card/id/",
+        showSets: "http://api.mtgapi.com/v2/sets",
+        showCardsInSet: "http://api.mtgapi.com/v2/sets?code="
+};
 
 // When someone searches for a card
 app.post("/search", function (req, res) 
