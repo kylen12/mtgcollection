@@ -65,33 +65,19 @@ passport.deserializeUser(function(id, done){
 });
 
 
-
-// Authenticating a user
-app.get("/", function (req, res) {
-  // req.user is the user currently logged in
-
-  if (req.user) {
-    res.render("site/index", {user: req.user});
-  } else {
-    res.render("site/index", {user: false});
-  }
-});
-
-
 app.get("/users/:id", function (req, res) {
-  console.log("User created");
   var id = req.params.id;
   db.user.find(id)
     .then(function (user) {
       res.render("users/dashboard", {user: user});
     })
     .error(function () {
-      res.redirect("/users/signup");
+      res.redirect("/signup");
     })
 });
 
 // WHEN SOMEONE  SUBMITS A SIGNUP PAGE
-app.post("/signup", function (req, res) 
+app.post("/users", function (req, res) 
 {
   console.log("POST /users");
   var newUser = req.body.user;
@@ -99,7 +85,6 @@ app.post("/signup", function (req, res)
   //CREATE a user and secure their password
   db.user.createSecure(newUser.email, newUser.password, 
     function () {
-      console.log("Redirecting");
       // if a user fails to create make them signup again
       res.redirect("/signup");
     },
@@ -113,6 +98,13 @@ app.post("/signup", function (req, res)
       });
     })
 });
+
+
+app.post("/login", passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
+
 
 // WHEN SOMEONE WANTS THE SIGNUP PAGE
 app.get("/signup", function (req, res) {
@@ -130,6 +122,19 @@ app.get("/logout", function (req, res) {
   res.redirect("/");
 });
 
+
+// Authenticating a user
+app.get("/", function (req, res) {
+  // req.user is the user currently logged in
+  console.log(req.user);
+  if (req.user) {
+    console.log("User signed in");
+    res.render("users/dashboard", {user: req.user});
+  } else {
+    console.log("User signed out");
+    res.render("site/index.ejs", {user: false});
+  }
+});
 
 // Start the server
 var server = app.listen(3001, function () 

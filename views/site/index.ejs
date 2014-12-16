@@ -88,12 +88,16 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-12 pads">
-    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="get" action="/login">
-      
+    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="post" action="/login">
+        <div>Username</div>
+        <input id="useremail" type="text" name="user[email]">
 
-      <button>Log In</button>
+        <div>Password</div>
+        <input id="userpassword" type="text" name="user[password]">
+          <div><button>Log In</button></div>
     </form>
-    </div></div>
+    </div>
+    </div>
   </div>
 
     <div class="container">
