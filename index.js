@@ -174,10 +174,19 @@ app.get("/users/:id", function (req, res) {
     })
 });
 
+app.get("/users/dashboard", function(req, res)
+{
+    db.user.findAll(
+    // {include: [db.author]}
+    ).then(function(users) {
+    console.log("Showing all users:",users);
+
+  });
+});
+
 // Authenticating a user
 app.get("/", function (req, res) {
   // req.user is the user currently logged in
-  console.log(req.user);
   if (req.user) {
     console.log("User signed in");
     res.render("users/dashboard", {user: req.user});
@@ -209,13 +218,10 @@ app.get("/logout", function (req, res) {
 });
 
 
-// Start the server
-var server = app.listen(3001, function () 
-{
-
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log('Example app listening at http://%s:%s', host, port)
-
-})
+db.sequelize.sync().then(function() {
+    var server = app.listen(3001, function() {
+    console.log(new Array(51).join("*"));
+    console.log("\t LISTENING ON: \n\t\t localhost:3000");
+    console.log(new Array(51).join("*")); 
+  });
+});
