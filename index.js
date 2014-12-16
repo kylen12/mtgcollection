@@ -19,19 +19,6 @@ var apiUrls =
 	showCardsInSet: "http://api.mtgapi.com/v2/sets?code="
 };
 
-app.post('/login', function(req,res)
-{
-	// displays the login webpage
-	res.render('users/login');
-});
-
-app.post('/signup', function(req,res)
-{
-	// displays the sign up webpage
-	res.render('users/signup');	
-});
-
-
 app.post('/authenticate/signup', function(req, res)
 {
 	// validate if information is legit
@@ -89,60 +76,6 @@ app.post('/search', function(req,res)
 	});		
 });
 
-
-
-app.post("/users", function (req, res) {
-  console.log("POST /users");
-  var newUser = req.body.user;
-  console.log("New User:", newUser);
-  db.user.createSecure(newUser.email, newUser.password, 
-    function () {
-      res.redirect("/signup");
-    },
-    function (err, user) {
-      req.login(user, function(){
-        console.log("Id: ", user.id)
-        res.redirect('/users/' + user.id);
-      });
-
-
-
-    }
-  )
-});
-
-// app.post('/login', passport.authenticate('local', {
-//   successRedirect: '/',
-//   failureRedirect: '/login'
-// }));
-
-
-app.get("/logout", function (req, res) {
-  req.logout();
-  res.redirect("/");
-});
-
-
-app.get("/users", function (req, res) {
-  console.log(req.user)
-  if (req.user) {
-    res.render("users/index", {user: req.user});
-  } else {
-    res.render("users/index", {user: false});
-  }
-});
-
-
-app.get('/', function (req, res) {
-  res.render('site/index.ejs');
-})
-
-
-
-app.post('/cards/', function(req,res)
-{
-});
-
 app.get('/cards/:id', function(req, res)
 {
 	request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
@@ -157,12 +90,21 @@ app.get('/cards/:id', function(req, res)
 	});		
 });
 
+app.get('/', function (req, res) {
+  res.render('site/index.ejs');
+})
 
+app.post('/login', function(req,res)
+{
+	// displays the login webpage
+	res.render('users/login');
+});
 
-
-
-
-
+app.post('/signup', function(req,res)
+{
+	// displays the sign up webpage
+	res.render('users/signup');	
+});
 
 // Start the server
 var server = app.listen(3001, function () 
