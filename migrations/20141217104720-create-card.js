@@ -11,6 +11,9 @@ module.exports = {
       image: {
         type: DataTypes.STRING
       },
+      collectionId: {
+        type: DataTypes.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

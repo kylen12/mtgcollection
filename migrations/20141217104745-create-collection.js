@@ -11,6 +11,9 @@ module.exports = {
       name: {
         type: DataTypes.STRING
       },
+      userId: {
+        type: DataTypes.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
