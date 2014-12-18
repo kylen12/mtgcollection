@@ -82,6 +82,10 @@ app.post('/cards/:id', function(req, res)
 
 	request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
 	{
+    var user = req.user;
+    console.log(user);
+    if (user !== false || user !== 'undefined')
+    {
 		if (!error && response.statusCode == 200) 
 		{
 			var obj = JSON.parse(body);
@@ -94,10 +98,16 @@ app.post('/cards/:id', function(req, res)
       .then(function (collection) {
         db.card
       .create({image: obj[0].image, collectionId: collection.id})
+      })
+      .then (function() {
+        console.log("In Cards id"); 
+        res.redirect('/users/dashboard');
       });
 
 
+
 		}
+  }
 	});		
 });
 
@@ -231,52 +241,54 @@ app.post("/search", function (req, res)
 });
 
 app.get("/", function (req, res) {
+
+  res.render('test');
    
   //req.user is the user currently logged in
-  if (req.user) {
+  // if (req.user) {
 
-  var collections = [];  
+  // var collections = [];  
 
-   db.collection.findAll({
-      where: {
-        userId: req.user.id
-      },
-      include: [db.user]
-    })
-    .then(function(cols) {
-      var counter = 0;
-      var numCols = cols.length;
+  //  db.collection.findAll({
+  //     where: {
+  //       userId: req.user.id
+  //     },
+  //     include: [db.user]
+  //   })
+  //   .then(function(cols) {
+  //     var counter = 0;
+  //     var numCols = cols.length;
 
-      cols.forEach(function (collection)
-      {
-        console.log(collection.name);
-        console.log("in collection");
+  //     cols.forEach(function (collection)
+  //     {
+  //       console.log(collection.name);
+  //       console.log("in collection");
 
-          db.card.findAll({
-            where: {
-              collectionId : collection.id
-            },
-            include: [db.collection]
+  //         db.card.findAll({
+  //           where: {
+  //             collectionId : collection.id
+  //           },
+  //           include: [db.collection]
 
-          })
-          .then(function(cards) {
-              collections[counter] = 
-              new Collection(cards[0].collection.name, cards);
+  //         })
+  //         .then(function(cards) {
+  //             collections[counter] = 
+  //             new Collection(cards[0].collection.name, cards);
 
-          })
-          .then (function() {
-              counter += 1;
+  //         })
+  //         .then (function() {
+  //             counter += 1;
 
-              if (counter === numCols)
-              {
-                res.render("users/dashboard", { collections : collections});
-              }
-          })
+  //             if (counter === numCols)
+  //             {
+  //               res.render("users/dashboard", { collections : collections});
+  //             }
+  //         })
 
-      });
+  //     });
 
 
-    })
+  //   })
 
       //   console.log("# of collections: " + cols.length);
       //   for (var i = 0; i < cols.length; i += 1)
@@ -399,10 +411,10 @@ app.get("/", function (req, res) {
  //         // res.render("users/dashboard");
 
  //    });    
-  } else {
-    console.log("User signed out");
-    res.render("site/index.ejs", {user: false});
-  }
+  // } else {
+  //   console.log("User signed out");
+  //   res.render("site/index.ejs", {user: false});
+  // }
 });
 
 // WHEN SOMEONE WANTS THE SIGNUP PAGE
@@ -428,9 +440,7 @@ app.get("/logout", function (req, res) {
 
 
 db.sequelize.sync().then(function() {
-    var server = app.listen(3001, function() {
-    console.log(new Array(51).join("*"));
-    console.log("\t LISTENING ON: \n\t\t localhost:3000");
-    console.log(new Array(51).join("*")); 
-  });
+   app.listen(process.env.PORT || 3001);
+
+   console.log("Listening on 3001");
 });

@@ -70,6 +70,13 @@ img {
 
   <% cardList.forEach(function (card) { %>
     <% if (typeof card !== 'undefined') {%>
+
+        <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 pads">
+    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="post" action="/search">
+    </form>
+    </div>
+    </div>
       <div class="row">
         <div class="col-sm-2" style="height:100%">
           <a href="/cards/<%= card.id %>"><img src="<%= card.image %>"/></a>
