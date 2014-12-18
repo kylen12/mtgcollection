@@ -8,6 +8,7 @@ var methodOverride = require("method-override");
 var db = require("./models");
 var passport = require("passport");
 var session = require("cookie-session");
+var sequelize = require("sequelize");
 
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
@@ -74,71 +75,53 @@ var apiUrls =
         showCardsInSet: "http://api.mtgapi.com/v2/sets?code="
 };
 
-// When someone searches for a card
-app.post("/search", function (req, res) 
-{
-	// pulls card from the api db based on search query
-	// pulls card information from card id
-	// redirects to cards/show with cardList
 
-	var card = req.body.card;
-	var cardList = [];
-	
-	request(apiUrls["showCards"]+card.name, function (error, response, body) 
-	{
-		if (!error && response.statusCode == 200) 
-		{	
-			var obj = JSON.parse(body);
-			var stop = obj.length-1;
-			for (var i =0; i<obj.length; i+=1) 
-			{
-				(function (x) {
-					request(apiUrls['showCardById']+ obj[i].id, function(err, response, body) {
-						if (!err && response.statusCode === 200) {
-							var card = JSON.parse(body);
-
-							cardList[x] = card[0];
-						}
-
-						if (x === stop) {
-						    setTimeout(function() {
-							res.render("cards/cardlist", {cardList: cardList});
-						  },500);							
-						}
-					})
-				})(i);
-			}
-		}
-	});		
-});
 
 app.post('/cards/:id', function(req, res)
 {
-	request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
-	{
-		if (!error && response.statusCode == 200) 
-		{
-			var obj = JSON.parse(body);
-			//console.log(obj[0]);
 
-			// Add Card to DB
-			// Redirect to users library
-		}
-	});		
+  request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
+  {
+    var user = req.user;
+    console.log(user);
+    if (user !== false || user !== 'undefined')
+    {
+    if (!error && response.statusCode == 200) 
+    {
+      var obj = JSON.parse(body);
+
+      console.log("adding card");
+      db.collection.find( {
+        where : { userId : req.user.id },
+        include : [db.user]
+      })
+      .then(function (collection) {
+        db.card
+      .create({image: obj[0].image, collectionId: collection.id})
+      })
+      .then (function() {
+        console.log("In Cards id"); 
+        res.redirect('/users/dashboard');
+      });
+
+
+
+    }
+  }
+  });   
 });
 
 app.get('/cards/:id', function(req, res)
 {
-	request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
-	{
-		if (!error && response.statusCode == 200) 
-		{
-			var obj = JSON.parse(body);
-			//console.log(obj);
+  request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
+  {
+    if (!error && response.statusCode == 200) 
+    {
+      var obj = JSON.parse(body);
 
-			res.render("cards/show", { card : obj[0]} );
-		}
-	});		
+      res.render("cards/show", { card : obj[0]} );
+    }
+  });   
 });
 
 app.post('/users', function(req,res)
@@ -167,24 +150,271 @@ app.get("/users/:id", function (req, res) {
   var id = req.params.id;
   db.user.find(id)
     .then(function (user) {
-      res.render("users/dashboard", {user: user});
+
+   // db.collection.findAll(
+   //    {include: [db.user]}
+   //    ).then(function(collections) {
+   //    console.log("Showing all books:",collections);
+   //    // cards.forEach(function (card) {
+      //   console.log(new Array(51).join("*"));
+      //   console.log(card.image);
+      // })
+   // db.card.findAll(
+   //    {include: [db.collection]}
+   //    ).then(function(cards) {
+   //    console.log("Showing all books:",cards);
+   //    cards.forEach(function (card) {
+   //      console.log(new Array(51).join("*"));
+   //      console.log(card.image);
+   //    })
+   //       // res.render("users/dashboard");
+      res.redirect("/users/dashboard", {user: user});
+
+    // });      
+   //    
     })
     .error(function () {
-      res.redirect("/signup");
+      //res.redirect("/signup");
     })
 });
 
+app.get("/users/dashboard", function(req, res)
+{
+  console.log("Here");
+   // db.card.findAll(
+   //    {include: [db.collection]}
+   //    ).then(function(cards) {
+   //    console.log("Showing all books:",cards);
+   //    cards.forEach(function (card) {
+   //      console.log(new Array(51).join("*"));
+   //      console.log(card.image);
+   //    })
+   //       // res.render("users/dashboard");
+
+   //  });
+});
+
 // Authenticating a user
-app.get("/", function (req, res) {
-  // req.user is the user currently logged in
-  console.log(req.user);
-  if (req.user) {
-    console.log("User signed in");
-    res.render("users/dashboard", {user: req.user});
-  } else {
-    console.log("User signed out");
-    res.render("site/index.ejs", {user: false});
+  var Collection = function(name, cards)
+  {
+    this.name = name;
+    this.cards = cards;
+
   }
+
+// When someone searches for a card
+app.post("/search", function (req, res) 
+{
+  // pulls card from the api db based on search query
+  // pulls card information from card id
+  // redirects to cards/show with cardList
+
+  var card = req.body.card;
+  var cardList = [];
+  
+  request(apiUrls["showCards"]+card.name, function (error, response, body) 
+  {
+    if (!error && response.statusCode == 200) 
+    { 
+      var obj = JSON.parse(body);
+      var stop = obj.length-1;
+      for (var i =0; i<obj.length; i+=1) 
+      {
+        (function (x) {
+          request(apiUrls['showCardById']+ obj[i].id, function(err, response, body) {
+            if (!err && response.statusCode === 200) {
+              var card = JSON.parse(body);
+
+              cardList[x] = card[0];
+            }
+
+            if (x === stop) {
+                setTimeout(function() {
+              res.render("cards/cardlist", {cardList: cardList});
+              },500);             
+            }
+          })
+        })(i);
+      }
+    }
+  });   
+});
+
+app.get("/", function (req, res) {
+
+  res.render('test');
+   
+  //req.user is the user currently logged in
+  // if (req.user) {
+
+  // var collections = [];  
+
+  //  db.collection.findAll({
+  //     where: {
+  //       userId: req.user.id
+  //     },
+  //     include: [db.user]
+  //   })
+  //   .then(function(cols) {
+  //     var counter = 0;
+  //     var numCols = cols.length;
+
+  //     cols.forEach(function (collection)
+  //     {
+  //       console.log(collection.name);
+  //       console.log("in collection");
+
+  //         db.card.findAll({
+  //           where: {
+  //             collectionId : collection.id
+  //           },
+  //           include: [db.collection]
+
+  //         })
+  //         .then(function(cards) {
+  //             collections[counter] = 
+  //             new Collection(cards[0].collection.name, cards);
+
+  //         })
+  //         .then (function() {
+  //             counter += 1;
+
+  //             if (counter === numCols)
+  //             {
+  //               res.render("users/dashboard", { collections : collections});
+  //             }
+  //         })
+
+  //     });
+
+
+  //   })
+
+      //   console.log("# of collections: " + cols.length);
+      //   for (var i = 0; i < cols.length; i += 1)
+      //   {
+      //     console.log("Collection " + (i+1) + " name: " + 
+      //       cols[i].name);
+
+      //     db.card.findAll({
+      //       where: {
+      //         collectionId : cols[i].id
+      //       },
+      //       include: [db.collection]
+
+      //     })
+      //     .then(function(cards) {
+            
+      //       for (var j = 0, k = cards.length;
+      //         j < k; j += 1)
+      //       {
+      //         collections[i] = 
+      //         new Collection(cards[j].collection.name, cards);
+
+      //         console.log("i = " + i + " |||| col length: " + cols.length);
+      //         console.log("k = " + k + " |||| k length: " + cards.length);
+      //         if (i === cols.length && k === cards.length)
+      //         {
+      //           console.log("DONE");
+      //         }
+      //       }
+
+      //     })
+      //   }
+
+
+
+      // for (var i =0; i<obj.length; i+=1) 
+      // {
+      //   (function (x) {
+      //     request(apiUrls['showCardById']+ obj[i].id, function(err, response, body) {
+      //       if (!err && response.statusCode === 200) {
+      //         var card = JSON.parse(body);
+
+      //         cardList[x] = card[0];
+      //       }
+
+      //       if (x === stop) {
+      //           setTimeout(function() {
+      //         res.render("cards/cardlist", {cardList: cardList});
+      //         },500);             
+      //       }
+      //     })
+      //   })(i);
+      // }
+
+        //res.render("users/dashboard", { cardList : collections});
+
+
+
+
+
+    //    db.card.findAll({
+    //       where: {
+    //       collectionId: cols[i].id
+        
+    //   .then(function(cards) {
+
+    //       console.log(cards);
+    // }  )} 
+
+    //   })
+          
+
+
+
+
+ // db.card
+ //      .create({image: "img2", collectionId: 6})
+ //      .then(function () {
+ //          console.log("Successfully insert into collection");
+         
+ //      });      
+  
+      // console.log("User signed in");
+
+
+      // db.collection.findAll(
+      // {include: [db.user]}
+      // ).then(function(cols) {
+      //   for (var i = 0; i < cols.length; i += 1)
+      //   {
+      //     var name = cols[i].name;
+      //     console.log(name);
+      //     db.card.findAll(
+      //       { include: [db.collection]}
+      //       ). then(function(cards) {
+      //         console.log()
+      //           collections[i] = new Collection(name, cards);
+
+      //       })
+      //   }
+
+      //   res.render("users/dashboard", { cardList : collections});
+      // })
+
+    // res.render('users/dashboard', 
+    //   {
+    //     user : req.user,
+    //     collections : collections
+    //   });
+
+    
+ // db.card.findAll(
+ //      {include: [db.collection]}
+ //      ).then(function(cards) {
+ //      console.log("Showing all books:",cards);
+ //      cards.forEach(function (card) {
+ //        console.log(new Array(51).join("*"));
+ //        console.log(card.image);
+ //      })
+ //         // res.render("users/dashboard");
+
+ //    });    
+  // } else {
+  //   console.log("User signed out");
+  //   res.render("site/index.ejs", {user: false});
+  // }
 });
 
 // WHEN SOMEONE WANTS THE SIGNUP PAGE
@@ -209,13 +439,8 @@ app.get("/logout", function (req, res) {
 });
 
 
-// Start the server
-var server = app.listen(3001, function () 
-{
+db.sequelize.sync().then(function() {
+   app.listen(process.env.PORT || 3001);
 
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log('Example app listening at http://%s:%s', host, port)
-
-})
+   console.log("Listening on 3001");
+});
