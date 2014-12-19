@@ -17,11 +17,6 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         this.hasMany(models.collection);
-<<<<<<< HEAD
-        // associations can be defined here
-        //this.hasMany(models.article);
-=======
->>>>>>> dbcommands
       },
       findByEmail: function (email) {
         return this.find({

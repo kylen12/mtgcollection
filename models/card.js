@@ -7,10 +7,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-<<<<<<< HEAD
-=======
-        // associations can be defined here
->>>>>>> dbcommands
         this.belongsTo(models.collection);
       }
     }

@@ -150,49 +150,47 @@ app.get("/users/:id", function (req, res)
 {
   var id = req.params.id;
 
-  db.user.find(id)
-  .then(function (user) 
+  db.collection.findAll
+  ({
+     where : { userId : id },
+     include: [db.user] 
+  }).then(function(cols) 
   {
-    db.collection.findAll(
-       where : { userId : id },
-      {include: [db.user]}
-    ).then(function(cols) 
-
-      if (cols.length > 0)
+    if (cols.length > 0)
+    {
+      var counter = 0;
+      var numCols = cols.length;
+      var collections = [];
+      cols.forEach(function (collection)
       {
-        var counter = 0;
-        var numCols = cols.length;
+        console.log(collection.name);
+        console.log("in collection");
 
-        cols.forEach(function (collection)
-        {
-          console.log(collection.name);
-          console.log("in collection");
+          db.card.findAll({
+            where: {
+              collectionId : collection.id
+            },
+            include: [db.collection]
 
-            db.card.findAll({
-              where: {
-                collectionId : collection.id
-              },
-              include: [db.collection]
-
-            })
-            .then(function(cards) {
-
-                collections[counter] = 
-                new Collection(cards[0].collection.name, cards);
-
-            })
-            .then (function() {
-                counter += 1;
-
-                if (counter === numCols)
-                {
-                  res.render("users/dashboard", { collections : collections});
-                }
-            })
           })
-      })       
+          .then(function(cards) {
+            if (cards.length > 0)
+            {
+              collections[counter] = 
+              new Collection(cards[0].collection.name, cards);
+            }
+          })
+          .then (function() {
+              counter += 1;
+
+              if (counter === numCols)
+              {
+                res.render("users/dashboard", { collections : collections});
+              }
+          })
+        })
+    }
   })
-    })
 });
 
 app.get("/users/dashboard", function(req, res)
@@ -503,7 +501,7 @@ app.get("/logout", function (req, res) {
 });
 
 
-db.sequelize.sync({force:true}).then(function() {
+db.sequelize.sync().then(function() {
    app.listen(process.env.PORT || 3001);
 
    console.log("Listening on 3001");
