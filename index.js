@@ -88,27 +88,11 @@ app.get("/", function (req, res)
   //req.user is the user currently logged in
   if (user) 
   {
-    res.redirect('/users/' + user.id);
-    // var collections = [];  
+    res.redirect('/users/:' + user.id);
+  }
 
-    //  db.collection.findAll(
-    //  {
-    //     where: 
-    //     {
-    //       userId: req.user.id
-    //     },
-    //     include: [db.user]
-    //   })
-    //   .then(function(cols) 
-    //   {
-    //     console.log(cols);
-    //   });
-
-  } 
-  
   else 
   {
-    console.log("User signed out");
     res.render("site/index.ejs", {user: false});
   }    
   
@@ -129,20 +113,12 @@ app.post('/users', function(req,res)
     {
       req.login(user, function()
       {
-
-        db.user.find( {
-          where : { id : req.user.id }
-
+        console.log("Problem");
+        db.collection.create({name: "new deck", userId:user.id})
+        .then(function() {
+            res.redirect('/uesrs/:'+user.id);
         })
-        .then(function (user) {
-          db.collection
-        .create({name:"new deck", userId: user.id})
-        })
-        .then (function() {
-          res.redirect('/users/' + user.id);
-        });
-
-      });
+      })
     })
 });
 
@@ -231,43 +207,35 @@ app.post('/cards/:id', function(req, res)
   request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
   {
     var user = req.user;
-    console.log(user);
     if (user !== false || user !== 'undefined')
     {
-    if (!error && response.statusCode == 200) 
-    {
-      var obj = JSON.parse(body);
-
-      console.log("adding card");
-      db.collection.find( {
-        where : { userId : req.user.id },
-        include : [db.user]
-      })
-      .then(function (collection) {
+      if (!error && response.statusCode == 200) 
+      {
+        var obj = JSON.parse(body);
+        console.log(obj);
         db.card
-      .create({image: obj[0].image, collectionId: collection.id})
-      })
-      .then (function() {
-        console.log("In Cards id"); 
-        res.redirect('/users/dashboard');
-      });
+        .create({image: obj[0].image, collectionId:1})
+        .then (function() {
+          console.log("In Cards id"); 
+          res.redirect('/users/'+user.id);
+        });
 
-
+      }
 
     }
-  }
-  });   
-});
+  })
+});   
 
 app.get('/cards/:id', function(req, res)
 {
+  var user = req.user;
   request(apiUrls["showCardById"]+req.params.id, function (error, response, body) 
   {
     if (!error && response.statusCode == 200) 
     {
       var obj = JSON.parse(body);
 
-      res.render("cards/show", { card : obj[0]} );
+      res.redirect('/users/' + user.id);
     }
   });   
 });
@@ -300,7 +268,8 @@ app.post("/search", function (req, res)
 
             if (x === stop) {
                 setTimeout(function() {
-              res.render("cards/cardlist", {cardList: cardList});
+              res.render("cards/cardlist", {cardList: cardList,
+                user : req.user});
               },500);             
             }
           })
