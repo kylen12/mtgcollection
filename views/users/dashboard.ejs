@@ -31,12 +31,7 @@ body {
   /* The html and body elements cannot have any padding or margin. */
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
-  background-color: #2E2E2E;
-}
-
-.row {
-  margin-left:0px;
-  margin-right:0px;
+  background-color: black;
 }
 
 /* Wrapper for page content to push down footer */
@@ -66,7 +61,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 100;
 }
 
 
@@ -123,7 +118,7 @@ h1 {
 #nav.affix {
    position: fixed;
    top: 0;
-   z-index:10;
+   z-index:100;
    -webkit-transition: all .6s ease-in-out;
 }
 
@@ -214,15 +209,22 @@ section {
 
 
 .row {
-  z-index: 10;
-  padding-top:10px;
+  margin:20px;
 }
 
+button {
+  position: relative;
+  left: 25px;
+  margin:10px;
 
+  width: 200px; 
+
+}
 .card {
   position: relative;
   float: left;
-  width: 100%;
+  width: 250px;
+  z-index: 10;
 }
         </style>
     </head>
@@ -248,15 +250,15 @@ section {
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav nav-justified">
-          <li><a href="/">Home</a></li>
-          <li><a href="/signup">Join the Battle!</a></li>
+          <li><a href="/addDeck">New Deck</a></li>
 
           <li><a href="/contact">Contact</a></li>
+          <li><a href="/logout">Logout</a></li>
 
 
           <li>
           <form action="/search" method="post">
-          <input type="text" name="card[name]" value="Search for a card" style="position:relative;float:right; top:5px;"></input>
+          <input type="text" name="card[name]" value="Search for a card" style="position:relative;top:5px;"></input>
           </form>
           </li>          
 
@@ -269,55 +271,27 @@ section {
 </header>
   
   
-          <div class="container" style="background: url('http://wallpoper.com/images/00/24/21/41/magic-the_00242141.jpg'); width: 100%; height:820px; background-size:100%">
+          <div class="container" >
+              <div class="row">
 
           <% collections.forEach(function (collection) { %>
             <% collection.cards.forEach(function (card) { %>
 
             <% if (typeof card !== 'undefined') {%>
-              <div class="row-fluid">
-                <div class="col-sm-2">
-                  <a href="/cards/<%= card.id %>"><img class="card" src="<%= card.image %>"/></a>
-                </div>
-
-                <div class="col-sm-8">
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <a href="/cards/<%= card.id %>"><%= card.name %></a>
-                    </div>
-
-                    <div class="col-sm-3">
-                    <%= card.mana %>
-                    </div>
-
-                    <div class="col-sm-3" >
-                    <form method="post" action="/cards/<%= card.id %>">
-                      <button style="position:relative; float:right">Add</button>
-                    </form>
-                    </div>
-
-
+                <div class="col-sm-3" style="position:relative; float:left">
+                  <img class="card" src="<%= card.image %>"/>
+                  <div >
+                  <form action="/cards/delete" method="get">
+                    <button >Delete Card</button>
+                  </form>
                   </div>
-                  
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <%= card.name %>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-sm-12">
-                    <%= card.userId %>
-                  </div>
-                </div>
-
               </div>
 
-            </div>
             <% }  %>
-<% }) %>   
           <% }) %>   
-        </div>          
+          <% }) %>   
+                </div>
+
         </div>
 
         

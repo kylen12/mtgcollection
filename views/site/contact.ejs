@@ -83,9 +83,12 @@ body {
 
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
+  text-align: right;
   z-index: 10;
+  position: relative;
+  padding-right: 50px;
+  top:50px;
 }
-
 /* Declare heights because of positioning of img element */
 #myCarousel  .item {
   height: 800px;
@@ -133,7 +136,6 @@ h1 {
 .logo {
   font-size:40px;
   position:absolute;
-  z-index:1200;
   color:#333;
   top:70px;
   text-align:center;
@@ -240,33 +242,8 @@ section {
   padding-top:100px;
 }
 
-.bg-1 {
-  background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-2 {
-  background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-3 {
-  background: url('http://www.bootply.com/assets/example/bg_blueplane.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-4 {
-  padding-top:30px;
-    background-color:#e6e6e6;
+.signature {
+  text-align: left;
 }
 
 .panel .img-responsive {
@@ -306,17 +283,61 @@ section {
 
              <div class="row">
 
-             <div class="col-sm-7">
-             </div>
-
-             <div class="col-sm-5">
-             <p> test</p>
+             <div class="col-sm-4">
              </div>
 
 
-            <div class="carousel-caption">
+             <div class="col-sm-5 carousel-caption ">
+             <div class="signature">
+             Ky Meyer-Choi<br/>
+             Web Developer<br/>
+             510.990.4690
+<br/>
+<br/><br/><br/>
+<br/>
+Here I say a little bit about myself.</div>
+             </div>
 
-            </div>
+             <div class="col-sm-3 carousel-caption">
+             <h5>Languages</h5>
+JavaScript<br/>
+HTML<br/>
+CSS<br/>
+
+
+
+<br/>
+<h5>Frameworks</h5>
+Node.js<br/>
+ExpressJS<br/><br/>
+
+<h5>Database</h5>
+SQL<br/>
+PostgreSQL<br/>
+Sequelize<br/>
+SQL Management Studio<br/>
+
+
+<h5>Authorization</h5>
+Passport Local<br/>
+Bcrypt<br/><br/>
+
+<h5>Other</h5>
+Git<br/>
+GitHub<br/>
+Bootstrap<br/>
+JIRA<br/>
+Redmine<br/>
+
+
+<br/>
+<h5>Other Languages</h5>
+English<br/>
+Mandarin<br/>
+Cantonese<br/>
+Spanish<br/>
+Portuguese<br/>
+             </div>
           </div>
         </div>
 
@@ -339,7 +360,7 @@ section {
           <li><a href="/">Home</a></li>
           <li><a href="/login">Log In</a></li>
 
-          <li><a href="/contact">Contact</a></li>
+          <li><a href="/signup">Join the Battle!</a></li>
 
 
           <li>

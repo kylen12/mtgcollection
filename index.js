@@ -88,7 +88,7 @@ app.get("/", function (req, res)
   //req.user is the user currently logged in
   if (user) 
   {
-    res.redirect('/users/:' + user.id);
+    res.redirect('/users/' + user.id);
   }
 
   else 
@@ -173,22 +173,6 @@ app.get("/users/:id", function (req, res)
         })
     }
   })
-});
-
-app.get("/users/dashboard", function(req, res)
-{
-  console.log("Here");
-   // db.card.findAll(
-   //    {include: [db.collection]}
-   //    ).then(function(cards) {
-   //    console.log("Showing all books:",cards);
-   //    cards.forEach(function (card) {
-   //      console.log(new Array(51).join("*"));
-   //      console.log(card.image);
-   //    })
-   //       // res.render("users/dashboard");
-
-   //  });
 });
 
 // Authenticating a user
