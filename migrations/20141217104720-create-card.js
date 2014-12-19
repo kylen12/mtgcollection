@@ -8,22 +8,10 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      name: {
+      image: {
         type: DataTypes.STRING
       },
-      imgurl: {
-        type: DataTypes.TEXT
-      },
-      type: {
-        type: DataTypes.STRING
-      },
-      text: {
-        type: DataTypes.TEXT
-      },
-      mana: {
-        type: DataTypes.TEXT
-      },
-      collection_id: {
+      collectionId: {
         type: DataTypes.INTEGER
       },
       createdAt: {

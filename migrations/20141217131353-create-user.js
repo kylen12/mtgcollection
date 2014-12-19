@@ -1,15 +1,15 @@
 "use strict";
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable("authentications", {
+    migration.createTable("users", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      user_id: {
-        type: DataTypes.INTEGER
+      email: {
+        type: DataTypes.STRING
       },
       password_digest: {
         type: DataTypes.STRING
@@ -25,6 +25,6 @@ module.exports = {
     }).done(done);
   },
   down: function(migration, DataTypes, done) {
-    migration.dropTable("authentications").done(done);
+    migration.dropTable("users").done(done);
   }
 };

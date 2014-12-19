@@ -336,11 +336,27 @@ section {
     ================================================== -->
       <!-- Indicators
 
+<<<<<<< HEAD
       <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
       </ol>
+=======
+  <% cardList.forEach(function (card) { %>
+    <% if (typeof card !== 'undefined') {%>
+
+        <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 pads">
+    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="post" action="/search">
+    </form>
+    </div>
+    </div>
+      <div class="row">
+        <div class="col-sm-2" style="height:100%">
+          <a href="/cards/<%= card.id %>"><img src="<%= card.image %>"/></a>
+        </div>
+>>>>>>> dbcommands
 
       -->
 

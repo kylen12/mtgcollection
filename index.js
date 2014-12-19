@@ -146,54 +146,52 @@ app.post('/users', function(req,res)
     })
 });
 
-app.get("/users/:id", function (req, res) {
+app.get("/users/:id", function (req, res) 
+{
   var id = req.params.id;
 
-
   db.user.find(id)
-    .then(function (user) {
-      db.collection.findAll(
-         where : { userId : id },
-        {include: [db.user]}
-      ).then(function(cols) 
+  .then(function (user) 
+  {
+    db.collection.findAll(
+       where : { userId : id },
+      {include: [db.user]}
+    ).then(function(cols) 
+
+      if (cols.length > 0)
       {
+        var counter = 0;
+        var numCols = cols.length;
 
-        if (cols.length > 0)
+        cols.forEach(function (collection)
         {
-          var counter = 0;
-          var numCols = cols.length;
+          console.log(collection.name);
+          console.log("in collection");
 
-          cols.forEach(function (collection)
-          {
-            console.log(collection.name);
-            console.log("in collection");
+            db.card.findAll({
+              where: {
+                collectionId : collection.id
+              },
+              include: [db.collection]
 
-              db.card.findAll({
-                where: {
-                  collectionId : collection.id
-                },
-                include: [db.collection]
+            })
+            .then(function(cards) {
 
-              })
-              .then(function(cards) {
-                  collections[counter] = 
-                  new Collection(cards[0].collection.name, cards);
+                collections[counter] = 
+                new Collection(cards[0].collection.name, cards);
 
-              })
-              .then (function() {
-                  counter += 1;
+            })
+            .then (function() {
+                counter += 1;
 
-                  if (counter === numCols)
-                  {
-                    res.render("users/dashboard", { collections : collections});
-                  }
-              })
-
-        });        
-
-    })
-    .error(function () {
-      //res.redirect("/signup");
+                if (counter === numCols)
+                {
+                  res.render("users/dashboard", { collections : collections});
+                }
+            })
+          })
+      })       
+  })
     })
 });
 

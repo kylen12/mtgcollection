@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: function(migration, DataTypes, done) {
-    migration.createTable("users", {
+    migration.createTable("collections", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,7 +11,7 @@ module.exports = {
       name: {
         type: DataTypes.STRING
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER
       },
       createdAt: {
@@ -25,6 +25,6 @@ module.exports = {
     }).done(done);
   },
   down: function(migration, DataTypes, done) {
-    migration.dropTable("users").done(done);
+    migration.dropTable("collections").done(done);
   }
 };

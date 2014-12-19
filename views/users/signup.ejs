@@ -413,6 +413,7 @@ $('.panel .img-responsive').on('load', function() {
     var itemDiv = $(this).parent('a');
     var title = $(this).parent('a').attr("title");
     
+<<<<<<< HEAD
     item.attr("title",title);
     $(itemDiv.html()).appendTo(item);
     item.appendTo('#modalCarousel .carousel-inner'); 
@@ -451,6 +452,21 @@ $('.panel-thumbnail>a').click(function(e){
         
         });
         
+=======
+  <div class="container">
+    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="post" action="/users">
+      <div>Username</div>
+        <input type="text" name="user[email]">
+
+      <div>Password</div>
+        <input type="text" name="user[password]">
+      <div>
+      
+      <button>Sign Up</button>
+      </div>
+    </form>
+  </div>
+>>>>>>> dbcommands
 
         
 </body>
