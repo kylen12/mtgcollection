@@ -305,15 +305,19 @@ section {
           <div class="container">
 
              <div style="position:relative; float:right; top: 50px; right:-5px; color:white">
-			    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="post" action="/login">
 			      <div>Username</div>
 			      <input id="title" type="text" name="user[email]">
 			      <div>Password</div>
 			      <input id="title" type="text" name="user[password]">
 			      <div>
+
+            <form action="/signup" method="post">
 			      <button>Sign In</button>
-			      </div>
-			    </form>
+            </form>
+
+            <form action="/login" method="post">
+            <button>Log In</button>
+            </form>            
 
             </div>
 

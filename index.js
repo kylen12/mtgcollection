@@ -77,6 +77,152 @@ var apiUrls =
 
 
 
+
+
+
+
+app.get("/", function (req, res) 
+{
+  //res.render('site/index.ejs');
+   var user = req.user;
+  //req.user is the user currently logged in
+  if (user) 
+  {
+    res.redirect('/users/' + user.id);
+    // var collections = [];  
+
+    //  db.collection.findAll(
+    //  {
+    //     where: 
+    //     {
+    //       userId: req.user.id
+    //     },
+    //     include: [db.user]
+    //   })
+    //   .then(function(cols) 
+    //   {
+    //     console.log(cols);
+    //   });
+
+  } 
+  
+  else 
+  {
+    console.log("User signed out");
+    res.render("site/index.ejs", {user: false});
+  }    
+  
+});
+
+
+app.post('/users', function(req,res)
+{
+  var user = req.body.user;
+
+    db.user.createSecure(user.email, user.password, 
+    function () 
+    {
+      res.redirect("/signup");
+    },
+
+    function (err, user) 
+    {
+      req.login(user, function()
+      {
+
+        db.user.find( {
+          where : { id : req.user.id }
+
+        })
+        .then(function (user) {
+          db.collection
+        .create({name:"", userId: user.id})
+        })
+        .then (function() {
+          res.redirect('/users/' + user.id);
+        });
+
+      });
+    })
+});
+
+app.get("/users/:id", function (req, res) {
+  var id = req.params.id;
+
+
+  db.user.find(id)
+    .then(function (user) {
+      db.collection.findAll(
+         where : { userId : id },
+        {include: [db.user]}
+      ).then(function(cols) 
+      {
+
+        if (cols.length > 0)
+        {
+          var counter = 0;
+          var numCols = cols.length;
+
+          cols.forEach(function (collection)
+          {
+            console.log(collection.name);
+            console.log("in collection");
+
+              db.card.findAll({
+                where: {
+                  collectionId : collection.id
+                },
+                include: [db.collection]
+
+              })
+              .then(function(cards) {
+                  collections[counter] = 
+                  new Collection(cards[0].collection.name, cards);
+
+              })
+              .then (function() {
+                  counter += 1;
+
+                  if (counter === numCols)
+                  {
+                    res.render("users/dashboard", { collections : collections});
+                  }
+              })
+
+        });        
+
+    })
+    .error(function () {
+      //res.redirect("/signup");
+    })
+});
+
+app.get("/users/dashboard", function(req, res)
+{
+  console.log("Here");
+   // db.card.findAll(
+   //    {include: [db.collection]}
+   //    ).then(function(cards) {
+   //    console.log("Showing all books:",cards);
+   //    cards.forEach(function (card) {
+   //      console.log(new Array(51).join("*"));
+   //      console.log(card.image);
+   //    })
+   //       // res.render("users/dashboard");
+
+   //  });
+});
+
+// Authenticating a user
+  var Collection = function(name, cards)
+  {
+    this.name = name;
+    this.cards = cards;
+
+  }
+
+
+
 app.post('/cards/:id', function(req, res)
 {
 
@@ -124,83 +270,6 @@ app.get('/cards/:id', function(req, res)
   });   
 });
 
-app.post('/users', function(req,res)
-{
-  console.log("POST /users");
-  var newUser = req.body.user;
-  console.log("New User:", newUser);
-  //CREATE a user and secure their password
-  db.user.createSecure(newUser.email, newUser.password, 
-    function () {
-      // if a user fails to create make them signup again
-      res.redirect("/signup");
-    },
-    function (err, user) {
-      // when successfully created log the user in
-      // req.login is given by the passport
-      req.login(user, function(){
-        // after login redirect show page
-        console.log("Id: ", user.id)
-        res.redirect('/users/' + user.id);
-      });
-    })
-});
-
-app.get("/users/:id", function (req, res) {
-  var id = req.params.id;
-  db.user.find(id)
-    .then(function (user) {
-
-   // db.collection.findAll(
-   //    {include: [db.user]}
-   //    ).then(function(collections) {
-   //    console.log("Showing all books:",collections);
-   //    // cards.forEach(function (card) {
-      //   console.log(new Array(51).join("*"));
-      //   console.log(card.image);
-      // })
-   // db.card.findAll(
-   //    {include: [db.collection]}
-   //    ).then(function(cards) {
-   //    console.log("Showing all books:",cards);
-   //    cards.forEach(function (card) {
-   //      console.log(new Array(51).join("*"));
-   //      console.log(card.image);
-   //    })
-   //       // res.render("users/dashboard");
-      res.redirect("/users/dashboard", {user: user});
-
-    // });      
-   //    
-    })
-    .error(function () {
-      //res.redirect("/signup");
-    })
-});
-
-app.get("/users/dashboard", function(req, res)
-{
-  console.log("Here");
-   // db.card.findAll(
-   //    {include: [db.collection]}
-   //    ).then(function(cards) {
-   //    console.log("Showing all books:",cards);
-   //    cards.forEach(function (card) {
-   //      console.log(new Array(51).join("*"));
-   //      console.log(card.image);
-   //    })
-   //       // res.render("users/dashboard");
-
-   //  });
-});
-
-// Authenticating a user
-  var Collection = function(name, cards)
-  {
-    this.name = name;
-    this.cards = cards;
-
-  }
 
 // When someone searches for a card
 app.post("/search", function (req, res) 
@@ -240,53 +309,54 @@ app.post("/search", function (req, res)
   });   
 });
 
-app.get("/", function (req, res) {
+app.get("/contact", function(req, res)
+{
+  res.render("site/contact");
+});
 
-  res.render('test');
-   
-  //req.user is the user currently logged in
-  // if (req.user) {
 
-  // var collections = [];  
 
-  //  db.collection.findAll({
-  //     where: {
-  //       userId: req.user.id
-  //     },
-  //     include: [db.user]
-  //   })
-  //   .then(function(cols) {
-  //     var counter = 0;
-  //     var numCols = cols.length;
 
-  //     cols.forEach(function (collection)
-  //     {
-  //       console.log(collection.name);
-  //       console.log("in collection");
 
-  //         db.card.findAll({
-  //           where: {
-  //             collectionId : collection.id
-  //           },
-  //           include: [db.collection]
 
-  //         })
-  //         .then(function(cards) {
-  //             collections[counter] = 
-  //             new Collection(cards[0].collection.name, cards);
 
-  //         })
-  //         .then (function() {
-  //             counter += 1;
 
-  //             if (counter === numCols)
-  //             {
-  //               res.render("users/dashboard", { collections : collections});
-  //             }
-  //         })
 
-  //     });
 
+
+  //       if (cols.length > 0)
+  //       {
+  //         var counter = 0;
+  //         var numCols = cols.length;
+
+  //         cols.forEach(function (collection)
+  //         {
+  //           console.log(collection.name);
+  //           console.log("in collection");
+
+  //             db.card.findAll({
+  //               where: {
+  //                 collectionId : collection.id
+  //               },
+  //               include: [db.collection]
+
+  //             })
+  //             .then(function(cards) {
+  //                 collections[counter] = 
+  //                 new Collection(cards[0].collection.name, cards);
+
+  //             })
+  //             .then (function() {
+  //                 counter += 1;
+
+  //                 if (counter === numCols)
+  //                 {
+  //                   res.render("users/dashboard", { collections : collections});
+  //                 }
+  //             })
+
+  //       });
+  // }
 
   //   })
 
@@ -411,11 +481,7 @@ app.get("/", function (req, res) {
  //         // res.render("users/dashboard");
 
  //    });    
-  // } else {
-  //   console.log("User signed out");
-  //   res.render("site/index.ejs", {user: false});
-  // }
-});
+  
 
 // WHEN SOMEONE WANTS THE SIGNUP PAGE
 app.get("/signup", function (req, res) {
@@ -439,7 +505,7 @@ app.get("/logout", function (req, res) {
 });
 
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({force:true}).then(function() {
    app.listen(process.env.PORT || 3001);
 
    console.log("Listening on 3001");
