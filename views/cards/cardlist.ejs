@@ -32,11 +32,13 @@ body {
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
   background-color: #2E2E2E;
+  text-color:white;
 }
 
 .row {
   margin-left:0px;
   margin-right:0px;
+  text-color: white;
 }
 
 /* Wrapper for page content to push down footer */
@@ -111,7 +113,7 @@ body {
 
 header {
   background: black;
-  color:#555;
+  color:white;
 }
 
 header .dropdown-menu {
@@ -358,6 +360,7 @@ section {
                     </div>
 
                     <div class="col-sm-3" >
+                    
                     <form method="post" action="/cards/<%= card.id %>">
                       <button style="position:relative; float:right">Add</button>
                     </form>

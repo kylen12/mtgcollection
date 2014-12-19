@@ -116,7 +116,7 @@ app.post('/users', function(req,res)
         console.log("Problem");
         db.collection.create({name: "new deck", userId:user.id})
         .then(function() {
-            res.redirect('/uesrs/:'+user.id);
+            res.redirect('/users/'+user.id);
         })
       })
     })
@@ -197,11 +197,19 @@ app.post('/cards/:id', function(req, res)
       {
         var obj = JSON.parse(body);
         console.log(obj);
-        db.card
-        .create({image: obj[0].image, collectionId:1})
-        .then (function() {
-          console.log("In Cards id"); 
-          res.redirect('/users/'+user.id);
+
+        db.collection.find({
+          where : { userId : user.id
+        }
+
+        }).then(function(collection) {
+          db.card
+          .create({image: obj[0].image, collectionId:collection.userId})
+          .then (function() {
+            console.log("In Cards id"); 
+            res.redirect('/users/'+user.id);
+
+          })
         });
 
       }
