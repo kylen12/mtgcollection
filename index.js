@@ -136,7 +136,7 @@ app.post('/users', function(req,res)
         })
         .then(function (user) {
           db.collection
-        .create({name:"", userId: user.id})
+        .create({name:"new deck", userId: user.id})
         })
         .then (function() {
           res.redirect('/users/' + user.id);
@@ -156,16 +156,15 @@ app.get("/users/:id", function (req, res)
      include: [db.user] 
   }).then(function(cols) 
   {
+    console.log(cols);
     if (cols.length > 0)
     {
+      console.log("Cols Length: " + cols.length)
       var counter = 0;
       var numCols = cols.length;
       var collections = [];
       cols.forEach(function (collection)
       {
-        console.log(collection.name);
-        console.log("in collection");
-
           db.card.findAll({
             where: {
               collectionId : collection.id
@@ -179,6 +178,13 @@ app.get("/users/:id", function (req, res)
               collections[counter] = 
               new Collection(cards[0].collection.name, cards);
             }
+            else
+            {
+              console.log("Out great than cards");
+              collections[counter] = 
+              new Collection("new deck", cards)
+            }
+
           })
           .then (function() {
               counter += 1;
@@ -273,7 +279,6 @@ app.post("/search", function (req, res)
   // pulls card from the api db based on search query
   // pulls card information from card id
   // redirects to cards/show with cardList
-
   var card = req.body.card;
   var cardList = [];
   
@@ -483,6 +488,7 @@ app.get("/contact", function(req, res)
 app.get("/signup", function (req, res) {
   res.render("users/signup");
 });
+
 
 app.post("/login", passport.authenticate('local', {
   successRedirect: '/',

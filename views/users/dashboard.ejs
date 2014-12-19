@@ -20,12 +20,6 @@
 
 
 
-
-
-
-
-
-
         <!-- CSS code from Bootply.com editor -->
         
         <style type="text/css">
@@ -51,18 +45,13 @@ body {
   height: auto !important;
   height: 100%;
   /* Negative indent footer by its height */
-  margin: 0 auto -60px;
   /* Pad bottom by footer height */
   padding: 0 0 0px;
 }
 
 /* Set the fixed height of the footer here */
 #footer {
-  height: 60px;
   background-color: #f5f5f5;
-  margin-top:50px;
-  padding-top:20px;
-  padding-bottom:20px;
 }
 
 
@@ -100,12 +89,6 @@ body {
 }
 
 
-#wrap > .container {
-  padding: 0px 0px 0;
-}
-.container .credit {
-  margin: 0px 0;
-}
 
 #footer {
   background-color:#414141;
@@ -116,8 +99,9 @@ body {
 }
 
 header {
-  background: #333;
+  background: black;
   color:#555;
+  height:50px;
 }
 
 header .dropdown-menu {
@@ -130,20 +114,10 @@ h1 {
   font-size:50px;
 }
 
-.logo {
-  font-size:40px;
-  position:absolute;
-  z-index:1200;
-  color:#333;
-  top:70px;
-  text-align:center;
-  width:100%;
-}
 
 #nav {
   width: 100%;
   position:static;
-  top:-32px;
 }
 
 #nav.affix {
@@ -210,13 +184,6 @@ h1 {
   }
 }
 
-#map-canvas {
-    width: 100%; 
-    height: 300px;
-  margin: 0;
-  padding: 15px;
-}
-
 .scroll-top {
    position:fixed;
    bottom:0;
@@ -237,45 +204,28 @@ section {
   min-height: 400px;
   height: auto !important;
   height: 100%;
-  padding-top:100px;
 }
 
-.bg-1 {
-  background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-2 {
-  background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-3 {
-  background: url('http://www.bootply.com/assets/example/bg_blueplane.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
-.bg-4 {
-  padding-top:30px;
-    background-color:#e6e6e6;
-}
 
 .panel .img-responsive {
   min-height:270px;
     max-height:270px;
 }
+
+
+.row {
+  z-index: 10;
+  padding-top:10px;
+}
+
+
+.card {
+  position: relative;
+  float: left;
+  width: 100%;
+}
         </style>
     </head>
-    
     <!-- HTML code from Bootply.com editor -->
     
     <body  >
@@ -285,40 +235,6 @@ section {
 
  
 <header class="masthead">
-
-    <!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide">
-      <!-- Indicators -->
-
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-
-      
-
-      <div class="carousel-inner">
-        <div class="item active">
-          <img src="http://wallpoper.com/images/00/24/21/41/magic-the_00242141.jpg">
-          <div class="container">
-
-             <div style="position:relative; float:right; top: 50px; color:white">
-
-           
-
-            </div>
-
-            <div class="carousel-caption">
-
-            </div>
-          </div>
-        </div>
-
-
-</header>
-  
   
 <!-- Fixed navbar -->
 <div class="navbar navbar-custom navbar-inverse navbar-static-top" id="nav">
@@ -340,16 +256,69 @@ section {
 
           <li>
           <form action="/search" method="post">
-          <input type="text" name="card[name]" value="Search for a card" style="position:relative;float:right; top:5px;"></input></li>          
-
+          <input type="text" name="card[name]" value="Search for a card" style="position:relative;float:right; top:5px;"></input>
           </form>
+          </li>          
+
         </ul>
       </div><!--/.nav-collapse -->
     </div><!--/.container -->
 </div><!--/.navbar -->
 
+  
+</header>
+  
+  
+          <div class="container" style="background: url('http://wallpoper.com/images/00/24/21/41/magic-the_00242141.jpg'); width: 100%; height:820px; background-size:100%">
+
+          <% collections.forEach(function (collection) { %>
+            <% collection.cards.forEach(function (card) { %>
+
+            <% if (typeof card !== 'undefined') {%>
+              <div class="row-fluid">
+                <div class="col-sm-2">
+                  <a href="/cards/<%= card.id %>"><img class="card" src="<%= card.image %>"/></a>
+                </div>
+
+                <div class="col-sm-8">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <a href="/cards/<%= card.id %>"><%= card.name %></a>
+                    </div>
+
+                    <div class="col-sm-3">
+                    <%= card.mana %>
+                    </div>
+
+                    <div class="col-sm-3" >
+                    <form method="post" action="/cards/<%= card.id %>">
+                      <button style="position:relative; float:right">Add</button>
+                    </form>
+                    </div>
 
 
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <%= card.name %>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                    <%= card.userId %>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+            <% }  %>
+<% }) %>   
+          <% }) %>   
+        </div>          
+        </div>
 
         
         <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
