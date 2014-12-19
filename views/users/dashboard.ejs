@@ -256,11 +256,9 @@ button {
           <li><a href="/logout">Logout</a></li>
 
 
-          <li>
-          <form action="/search" method="post">
-          <input type="text" name="card[name]" value="Search for a card" style="position:relative;top:5px;"></input>
-          </form>
-          </li>          
+     <li>
+          <form id="search" action="/search" method="post">
+          <input id="searchInput" type="text" name="card[name]" value="Search" style="position:relative;float:right; top:5px;"></input></li>                         
 
         </ul>
       </div><!--/.nav-collapse -->
@@ -303,7 +301,40 @@ button {
 
 <script type='text/javascript' src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"></script>
 
+  <script>
+  if (annyang) {
+    var commands = {
+      'log in' : function() {
+        $("#login").submit();
+      },
+      'sign up' : function () {
+        $("#signup").submit();
+      },
+      'home' : function() {
+        $("#home").submit();
+      },
+      'contact' : function() {
+        $("#contact").submit();
+      },
+      'search for *term' : function(term) {
+        console.log(document.getElementById('searchInput').value);
+        document.getElementById('searchInput').value = term;
+        
+       $('#search').submit();
+      }
+    };
+
+    annyang.addCommands(commands);
+
+    annyang.debug();
+
+    annyang.start();
+  }
+
+  </script>
+        
 
         
         <!-- JavaScript jQuery code from Bootply.com editor  -->

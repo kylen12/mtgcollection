@@ -79,7 +79,10 @@ var apiUrls =
 
 
 
+app.get("/test", function(req,res) {
 
+  res.render("test");
+});
 
 app.get("/", function (req, res) 
 {

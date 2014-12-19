@@ -19,13 +19,6 @@
 
 
 
-
-
-
-
-
-
-
         <!-- CSS code from Bootply.com editor -->
         
         <style type="text/css">
@@ -88,7 +81,7 @@ body {
 
 /* Declare heights because of positioning of img element */
 #myCarousel  .item {
-  height: 830px;
+  height: 800px;
   background-color:#bbb;
 }
 #myCarousel img {
@@ -96,8 +89,9 @@ body {
   top: 0;
   left: 0;
   min-width: 100%;
-  height: 830px;
+  height: 800px;
 }
+
 
 
 #wrap > .container {
@@ -170,22 +164,22 @@ h1 {
 /* customize nav style */
 .navbar-custom {
     background-color: #2e2e2e;
-	font-weight:700;
+  font-weight:700;
     text-transform:uppercase;
     border-width:0;
 }
 .navbar-custom  .navbar-nav>li>a {
-	color: #ddd;
+  color: #ddd;
 }
 .navbar-custom  .dropdown-menu li>a:hover {
-	color: #eee;
+  color: #eee;
 }
 .navbar-custom  .navbar-nav li>a:hover, .navbar-nav li .open, .navbar-custom .navbar-nav .active a  {
-	background-color: #000;
+  background-color: #000;
 }
 .navbar-custom .navbar-nav>.dropdown>a .caret {
-	border-top-color: #999;
-	border-bottom-color: #999;
+  border-top-color: #999;
+  border-bottom-color: #999;
 }
 
 .navbar-collapse.in { /*3.0.2 bug workaround*/
@@ -193,28 +187,28 @@ h1 {
 }
 
 .navbar-toggle {
-	outline:0;
+  outline:0;
 }
 
 .divider {
-	height:50px;
+  height:50px;
 }
 
 .panel {
-	border-width:0;
+  border-width:0;
 }
 
 @media (max-width: 768px) {
-	header {
-	
-	}
+  header {
+  
+  }
 }
 
 #map-canvas {
-  	width: 100%; 
-  	height: 300px;
-	margin: 0;
-	padding: 15px;
+    width: 100%; 
+    height: 300px;
+  margin: 0;
+  padding: 15px;
 }
 
 .scroll-top {
@@ -241,36 +235,36 @@ section {
 }
 
 .bg-1 {
-	background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
+  background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
     -webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
-  	background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .bg-2 {
-	background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
+  background: url('http://www.bootply.com/assets/example/bg_suburb.jpg') no-repeat center center fixed; 
     -webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
-  	background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .bg-3 {
-	background: url('http://www.bootply.com/assets/example/bg_blueplane.jpg') no-repeat center center fixed; 
+  background: url('http://www.bootply.com/assets/example/bg_blueplane.jpg') no-repeat center center fixed; 
     -webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
-  	background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .bg-4 {
-	padding-top:30px;
+  padding-top:30px;
     background-color:#e6e6e6;
 }
 
 .panel .img-responsive {
-	min-height:270px;
+  min-height:270px;
     max-height:270px;
 }
         </style>
@@ -286,7 +280,7 @@ section {
  
 <header class="masthead">
 
-  	<!-- Carousel
+    <!-- Carousel
     ================================================== -->
     <div id="myCarousel" class="carousel slide">
       <!-- Indicators
@@ -304,31 +298,19 @@ section {
           <img src="http://i.imgur.com/7axL7rg.jpg">
           <div class="container">
 
-<<<<<<< HEAD
-             <div style="position:relative; float:right; top: 50px; right:-5px; color:white">
-=======
-                     <div style="position:relative; float:right; top: 50px; right:-5px; color:white">
-        	    <form class="col-sm-12 col-md-12 col-lg-12 pads" method="get" action="/login">
->>>>>>> dbcommands
-			      <div>Username</div>
-			      <input id="title" type="text" name="user[email]">
-			      <div>Password</div>
-			      <input id="title" type="text" name="user[password]">
-			      <div>
-<<<<<<< HEAD
+             <div style="position:relative; float:right; top: 50px; color:white">
 
-            <form action="/signup" method="post">
-			      <button>Sign In</button>
-            </form>
+            <form id="login" action="/login" method="post">
+            <div>Username</div>
+            <input id="title" type="text" name="user[email]">
+            <div>Password</div>
+            <input id="title" type="text" name="user[password]">
+            <div>
 
-            <form action="/login" method="post">
             <button>Log In</button>
             </form>            
-=======
-			      <button>Sign In</button>
-			      </div>
-			    </form>
->>>>>>> dbcommands
+
+
 
             </div>
 
@@ -338,39 +320,7 @@ section {
           </div>
         </div>
 
-<!--        <div class="item">
-          <img src="/assets/example/bg_suburb.jpg">
-          <div class="container">
-            <div class="carousel-caption">
-              <h2>Interior Design</h2>
-              <p></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img src="/assets/example/bg_6.jpg">
-          <div class="container">
-            <div class="carousel-caption">
-              <h2>Renovations &amp; Adaptive Re-use</h2>
-              <p></p>
-            </div>
-          </div>
-        </div>      
 
- --> 
-  
-      </div><!-- /.carousel-inner -->
-      <div class="logo"></div> 
-      <!-- Controls 
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-      </a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-      </a>  
-    </div>
-    -->
-    <!-- /.carousel -->
 </header>
   
   
@@ -386,26 +336,16 @@ section {
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav nav-justified">
-          <li><a href="/">Home</a></li>
-          <li><a href="#section2">Profile</a></li>
-          <li class="dropdown">
-            <a href="#section3" class="dropdown-toggle" data-toggle="dropdown">Projects <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Academic</a></li>
-              <li><a href="#">Commercial</a></li>
-              <li><a href="#">Financial</a></li>
-              <li><a href="#">Interior Design</a></li>
-              <li><a href="#">Medical</a></li>
-              <li><a href="#">Religious</a></li>
-            </ul>
-          </li>
-          <li><a href="#section5">Contact</a></li>
+          <li><form id="home" action="/"><a href="/">Home</a></form></li>
+
+          <li><form id="signup" action="/signup"><a href="/signup">Join the Battle!</a></form></li>
+          <li><form id="contact" action="/contact"><a href="/contact">Contact</a></form></li>
+
 
           <li>
-          <form action="/search" method="post">
-          <input type="text" name="card[name]" value="Search" style="position:relative;float:right; top:5px;"></input></li>          
+          <form id="search" action="/search" method="post">
+          <input id="searchInput" type="text" name="card[name]" value="Search" style="position:relative;float:right; top:5px;"></input></li>               
 
-          </form>
         </ul>
       </div><!--/.nav-collapse -->
     </div><!--/.container -->
@@ -424,7 +364,39 @@ section {
 <script type='text/javascript' src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
 
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"></script>
 
+  <script>
+  if (annyang) {
+    var commands = {
+      'log in' : function() {
+        $("#login").submit();
+      },
+      'sign up' : function () {
+        $("#signup").submit();
+      },
+      'home' : function() {
+        $("#home").submit();
+      },
+      'contact' : function() {
+        $("#contact").submit();
+      },
+      'search for *term' : function(term) {
+        console.log(document.getElementById('searchInput').value);
+        document.getElementById('searchInput').value = term;
+        
+       $('#search').submit();
+      }
+    };
+
+    annyang.addCommands(commands);
+
+    annyang.debug();
+
+    annyang.start();
+  }
+
+  </script>
         
         <!-- JavaScript jQuery code from Bootply.com editor  -->
         
@@ -439,7 +411,7 @@ $('#nav').affix({
       offset: {
         top: $('header').height()-$('#nav').height()
       }
-});	
+}); 
 
 /* highlight the top nav as scrolling occurs */
 $('body').scrollspy({ target: '#nav' })
@@ -462,13 +434,13 @@ $('.panel .img-responsive').on('load', function() {
   
 }).each(function(i) {
   if(this.complete) {
-  	var item = $('<div class="item"></div>');
+    var item = $('<div class="item"></div>');
     var itemDiv = $(this).parent('a');
     var title = $(this).parent('a').attr("title");
     
     item.attr("title",title);
-  	$(itemDiv.html()).appendTo(item);
-  	item.appendTo('#modalCarousel .carousel-inner'); 
+    $(itemDiv.html()).appendTo(item);
+    item.appendTo('#modalCarousel .carousel-inner'); 
     if (i==0){ // set first item active
      item.addClass('active');
     }
@@ -488,22 +460,13 @@ $('.panel-thumbnail>a').click(function(e){
   
     e.preventDefault();
     var idx = $(this).parents('.panel').parent().index();
-  	var id = parseInt(idx);
-  	
-  	$('#myModal').modal('show'); // show the modal
+    var id = parseInt(idx);
+    
+    $('#myModal').modal('show'); // show the modal
     $('#modalCarousel').carousel(id); // slide carousel to selected
-  	return false;
+    return false;
 });
 
-
-
-
-
-
-
-        
-        });
-        
 
         
     </body>
